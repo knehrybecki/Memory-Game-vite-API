@@ -1,0 +1,47 @@
+.main
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    margin: 50px
+
+    &__game
+        display: flex
+        justify-content: center
+        align-items: center
+        column-gap: 30px
+        row-gap: 30px 
+        flex-flow: row wrap
+        width: 500px
+        height: 460px
+        perspective: 800px
+
+    &__card
+        width: 80px
+        height: 80px
+        position: relative  
+        transform-style: preserve-3d
+        transition: all 500ms linear
+        box-shadow: 0px 0px 24px -5px rgba(66, 68, 90, 1)
+    
+    &__score
+        margin-top: 10px
+        margin-bottom: 20px
+        font-size: 20px
+
+.card,
+.card__back
+    width: 100%
+    height: 100%
+    position: absolute
+
+.card__back
+    background-color: #000
+    backface-visibility: hidden
+    pointer-events: none
+    
+.answer
+    transform: rotateY(180deg)
+
+.hit
+    pointer-events: none
