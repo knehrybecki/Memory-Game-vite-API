@@ -9,15 +9,19 @@ let selectedDivCards = []
 let score = 0
 let cardPairs
 
-const ApiKey = '1c851fa8-2663-4d78-a090-0b1ed887373d'
+const API_KEY = '1c851fa8-2663-4d78-a090-0b1ed887373d'
 const urlCat = 'https://api.thecatapi.com/v1/images/search?mime_types=jpg,png&limit=8'
 
 fetch(urlCat, {
     headers: {
-        'x-api-key': ApiKey
+        'x-api-key': API_KEY
     }
 })
-    .then(response => response.json())
+    .then(response => {
+        if (response.ok) {
+        return response.json()
+        }
+    })
     .then(data => {
         const cards = data.flatMap(item => array.concat(item.url))
         const renderCards = [...cards, ...cards]
@@ -30,8 +34,6 @@ fetch(urlCat, {
         createScore()
     })
     .catch((error => {
-        console.log('error', error)
-
         const errIcon = document.createElement('i')
         errIcon.classList.add('fa-solid', 'fa-circle-exclamation')
         errIcon.textContent = `something went wrong:  ${error}`
@@ -48,16 +50,10 @@ const createLoader = () => {
     const loader = document.createElement('div')
     loader.classList.add('lds-ellipsis')
 
-    const loaderBall = document.createElement('div')
-    const loaderBall2 = document.createElement('div')
-    const loaderBall3 = document.createElement('div')
-    const loaderBall4 = document.createElement('div')
+    let loaderBall = Array.from(new Array(4)).map(() => document.createElement('div'))
+    loaderBall.forEach((item => loader.appendChild(item)))
 
     main.appendChild(loader)
-    loader.appendChild(loaderBall4)
-    loader.appendChild(loaderBall)
-    loader.appendChild(loaderBall2)
-    loader.appendChild(loaderBall3)
 }
 createLoader()
 
@@ -153,4 +149,3 @@ const restartGame = mainScore => {
         })
     } 
 }
-    
