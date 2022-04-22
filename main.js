@@ -22,18 +22,45 @@ fetch(urlCat, {
         const cards = data.flatMap(item => array.concat(item.url))
         const renderCards = [...cards, ...cards]
 
-        renderCards.sort(() => Math.random() - 0.5)
-
         cardPairs = renderCards.length / 2
 
+        renderCards.sort(() => Math.random() - 0.5)
         renderCards.forEach(item => renderGame(item))
+
+        createScore()
     })
-    .catch((error => console.log('error', error)))
+    .catch((error => {
+        console.log('error', error)
+
+        const errIcon = document.createElement('i')
+        errIcon.classList.add('fa-solid', 'fa-circle-exclamation')
+        errIcon.textContent = `something went wrong:  ${error}`
+
+        main.appendChild(errIcon)
+    }))
+    .finally(() => document.querySelector('.lds-ellipsis').remove())
 
 const game = document.createElement('div')
 game.classList = 'main__game'
 main.appendChild(game)
- 
+
+const createLoader = () => {
+    const loader = document.createElement('div')
+    loader.classList.add('lds-ellipsis')
+
+    const loaderBall = document.createElement('div')
+    const loaderBall2 = document.createElement('div')
+    const loaderBall3 = document.createElement('div')
+    const loaderBall4 = document.createElement('div')
+
+    main.appendChild(loader)
+    loader.appendChild(loaderBall4)
+    loader.appendChild(loaderBall)
+    loader.appendChild(loaderBall2)
+    loader.appendChild(loaderBall3)
+}
+createLoader()
+
 const renderGame = item => {
     const mainCard = document.createElement('div')
     mainCard.classList = 'main__card'
@@ -67,12 +94,12 @@ const flipCard = event => {
     const [divOne] = selectedDivCards
 
     if (selectedCards.length === 1) {
-        divOne.style.pointerEvents = "none"
+        divOne.style.pointerEvents = 'none'
     }
 
     if (selectedCards.length === 2) {
         setTimeout(checkCards, 800), 
-        mainCards.forEach(element => element.style.pointerEvents = "none")
+        mainCards.forEach(element => element.style.pointerEvents = 'none')
     }   
 }
 
@@ -84,15 +111,15 @@ const checkCards = () => {
 
     if (cardOne.getAttribute('src') === cardTwo.getAttribute('src')) {
         selectedDivCards.forEach(item => {
-            item.style.pointerEvents = "none"
+            item.style.pointerEvents = 'none'
             item.classList.add('hit')
     })
         mainCards.forEach(element => element.style.pointerEvents = null)
 
         score++
-        mainScore.textContent = "Scores: " + score
+        mainScore.textContent = `Scores: ${score}`
     }
-    else {  
+    if (cardOne.getAttribute('src') !== cardTwo.getAttribute('src')) {
         selectedDivCards.forEach(item => item.classList.remove('answer'))
         mainCards.forEach(element => element.style.pointerEvents = null)
     }
@@ -106,7 +133,7 @@ const checkCards = () => {
 const createScore = () => {
     const points = document.createElement('div')
     points.classList = 'main__score'
-    points.textContent = "Scores: " + score
+    points.textContent = `Scores: ${score}`
 
     main.appendChild(points)
 }
@@ -115,16 +142,15 @@ const restartGame = mainScore => {
     const resetCards = document.querySelectorAll('.answer')
 
     if (score === cardPairs) {
-        alert("The End Game!")
+        alert('The End Game!')
 
         score = 0
-        mainScore.textContent = "Scores: " + score
+        mainScore.textContent =  `Scores: ${score}`
 
         resetCards.forEach(item => {
-            item.classList.remove('answer','hit')
+            item.classList.remove('answer', 'hit')
             item.style.pointerEvents = null
         })
     } 
 }
-
-createScore()
+    
