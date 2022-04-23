@@ -10,7 +10,7 @@ let score = 0
 let cardPairs
 
 const API_KEY = '1c851fa8-2663-4d78-a090-0b1ed887373d'
-const urlCat = 'https://api.thecatapi.com/v1/images/search?mime_types=jpg,png&limit=8'
+const urlCat = 'https://awpi.thecatapi.com/v1/images/search?mime_types=jpg,png&limit=8'
 
 fetch(urlCat, {
     headers: {
@@ -21,6 +21,8 @@ fetch(urlCat, {
         if (response.ok) {
         return response.json()
         }
+
+    console.log(new Error(response.status))   
     })
     .then(data => {
         const cards = data.flatMap(item => array.concat(item.url))
@@ -39,7 +41,7 @@ fetch(urlCat, {
         errIcon.textContent = `something went wrong:  ${error}`
 
         main.appendChild(errIcon)
-    }))
+   })) 
     .finally(() => document.querySelector('.lds-ellipsis').remove())
 
 const game = document.createElement('div')
