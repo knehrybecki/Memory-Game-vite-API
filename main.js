@@ -10,7 +10,7 @@ let score = 0
 let cardPairs
 
 const API_KEY = '1c851fa8-2663-4d78-a090-0b1ed887373d'
-const urlCat = 'https://awpi.thecatapi.com/v1/images/search?mime_types=jpg,png&limit=8'
+const urlCat = 'https://api.thecatapi.com/vf1/images/search?mime_types=jpg,png&limit=8'
 
 fetch(urlCat, {
     headers: {
@@ -21,9 +21,10 @@ fetch(urlCat, {
         if (response.ok) {
         return response.json()
         }
-
-    console.log(new Error(response.status))   
+        
+        console.log(response.status)
     })
+    .catch(error => console.log(error))
     .then(data => {
         const cards = data.flatMap(item => array.concat(item.url))
         const renderCards = [...cards, ...cards]
@@ -35,7 +36,7 @@ fetch(urlCat, {
 
         createScore()
     })
-    .catch((error => {
+    .catch((error => {     
         const errIcon = document.createElement('i')
         errIcon.classList.add('fa-solid', 'fa-circle-exclamation')
         errIcon.textContent = `something went wrong:  ${error}`
